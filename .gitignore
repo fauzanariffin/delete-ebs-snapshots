@@ -1,0 +1,8 @@
+# General
+.DS_Store
+
+# Ignore the following files
+listofsnaps.txt
+listofsnaps.txt_tmp
+SNAP_TO_DELETE.txt
+SNAP_TO_KEEP.txt
