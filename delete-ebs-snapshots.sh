@@ -1,8 +1,8 @@
 #!/bin/sh
 
 #source /etc/profile
-#TODAYINSEC=$(gdate  +%s)
-DATETOCOMPARE=$(date -v-30d +%s)
+TODAYINSEC=$(gdate  +%s)
+DATTOCOMPARE=$(date -v-30d +%s)
 date > SNAP_TO_KEEP.txt
 date > SNAP_TO_DELETE.txt
 
@@ -21,8 +21,8 @@ while read az; do
                             raw_date=`echo $snap | cut -d, -f2`
                             snap_date=`gdate -d $raw_date +%s`
                             echo "Snap date is: " $snap_date
-                            echo "Snap to compare is: " $DATETOCOMPARE
-                                      if [ $DATETOCOMPARE -gt $snap_date ]
+                            echo "Snap to compare is: " $DATTOCOMPARE
+                                      if [ $DATTOCOMPARE -gt $snap_date ]
                                       then
                                          echo $snap | cut -d, -f1 >> SNAP_TO_DELETE.txt
                                          snapToDelete=`echo $snap | cut -d, -f1`
