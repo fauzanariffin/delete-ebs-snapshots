@@ -1,8 +1,12 @@
 #!/bin/sh
 
-#source /etc/profile
-TODAYINSEC=$(gdate  +%s)
-DATTOCOMPARE=$(date -v-30d +%s)
+# Determine whether the OS is Linux or OSX based
+if [ uname == "Linux" ]; then
+    DATETOCOMPARE=$(date -v-30d +%s) #OSX
+else
+    DATETOCOMPARE=$(date --date="30 days ago" +%s) #Linux
+fi
+
 date > SNAP_TO_KEEP.txt
 date > SNAP_TO_DELETE.txt
 
@@ -18,19 +22,19 @@ while read az; do
                             while read snap
                             do
                             echo "working on snap " $snap
-                            raw_date=`echo $snap | cut -d, -f2`
+                            raw_date=`echo $snap | cut -d, -f1`
                             snap_date=`gdate -d $raw_date +%s`
                             echo "Snap date is: " $snap_date
-                            echo "Snap to compare is: " $DATTOCOMPARE
-                                      if [ $DATTOCOMPARE -gt $snap_date ]
+                            echo "Snap to compare is: " $DATETOCOMPARE
+                                      if [ $DATETOCOMPARE -gt $snap_date ]
                                       then
-                                         echo $snap | cut -d, -f1 >> SNAP_TO_DELETE.txt
-                                         snapToDelete=`echo $snap | cut -d, -f1`
+                                         echo $snap | cut -d, -f2 >> SNAP_TO_DELETE.txt
+                                         snapToDelete=`echo $snap | cut -d, -f2`
                                          echo "Deleting Snapshot: " $snapToDelete
                                          aws ec2 delete-snapshot --region $az --snapshot-id $snapToDelete
                                          echo "aws ec2 delete-snapshot --region" $az "--snapshot-id" $snapToDelete
                                       else
-                                         echo $snap | cut -d, -f1 >> SNAP_TO_KEEP.txt
+                                         echo $snap | cut -d, -f2 >> SNAP_TO_KEEP.txt
                                       fi
                             done < listofsnaps.txt_tmp
               done <owner-list.txt
