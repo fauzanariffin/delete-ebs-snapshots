@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Determine whether the OS is Linux or OSX based
-if [ uname == "Linux" ]; then
+if [ `uname` == "OSX" ]; then
     DATETOCOMPARE=$(date -v-30d +%s) #OSX
 else
     DATETOCOMPARE=$(date --date="30 days ago" +%s) #Linux
